@@ -10,7 +10,7 @@ import (
 func TestArgumentsForClash(t *testing.T) {
 	dosFlags := []string{}
 	posixFlags := []string{}
-	psFlags := []string{}
+	powerShellFlags := []string{}
 
 	args := reflect.ValueOf(Arguments{})
 	typ := args.Type()
@@ -100,31 +100,31 @@ func TestArgumentsForClash(t *testing.T) {
 		}
 
 		// Get and assert the PowerShell flag(s)
-		psOrig := field.Tag.Get("ps")
-		ps := strings.ToLower(field.Tag.Get("ps"))
-		if len(ps) == 0 {
-			t.Errorf("The field %s does not have the `ps` attribute.", field.Name)
-		} else if strings.HasPrefix(ps, "-") || strings.HasPrefix(ps, "/") {
+		powerShellOrig := field.Tag.Get("powershell")
+		powerShell := strings.ToLower(field.Tag.Get("powershell"))
+		if len(powerShell) == 0 {
+			t.Errorf("The field %s does not have the `powerShell` attribute.", field.Name)
+		} else if strings.HasPrefix(powerShell, "-") || strings.HasPrefix(powerShell, "/") {
 			t.Errorf("The field %s's PowerShell long flag must not begin with the argument delimiter themselves (`-`, `--`, or `/`).", field.Name)
-		} else if strings.Contains(ps, ":") || strings.Contains(ps, "=") {
+		} else if strings.Contains(powerShell, ":") || strings.Contains(powerShell, "=") {
 			t.Errorf("The field %s's PowerShell long flag must not contain the value delimiter (`:` or `=`).", field.Name)
-		} else if slices.Contains(psFlags, ps) {
-			t.Errorf("The field %s uses a PowerShell long flag `-%s` that has been used in another argument.", field.Name, psOrig)
+		} else if slices.Contains(powerShellFlags, powerShell) {
+			t.Errorf("The field %s uses a PowerShell long flag `-%s` that has been used in another argument.", field.Name, powerShellOrig)
 		} else {
-			psFlags = append(psFlags, ps)
+			powerShellFlags = append(powerShellFlags, powerShell)
 		}
 
-		psShortOrig := field.Tag.Get("ps_short")
-		psShort := strings.ToLower(psShortOrig)
-		if len(psShort) > 0 {
-			if strings.HasPrefix(psShort, "-") || strings.HasPrefix(psShort, "/") {
+		powerShellShortOrig := field.Tag.Get("powershell_short")
+		powerShellShort := strings.ToLower(powerShellShortOrig)
+		if len(powerShellShort) > 0 {
+			if strings.HasPrefix(powerShellShort, "-") || strings.HasPrefix(powerShellShort, "/") {
 				t.Errorf("The field %s's PowerShell short flag must not begin with the argument delimiter themselves (`-`, `--`, or `/`).", field.Name)
-			} else if strings.Contains(psShort, ":") || strings.Contains(psShort, "=") {
+			} else if strings.Contains(powerShellShort, ":") || strings.Contains(powerShellShort, "=") {
 				t.Errorf("The field %s's PowerShell short flag must not contain the value delimiter (`:` or `=`).", field.Name)
-			} else if slices.Contains(psFlags, psShort) {
-				t.Errorf("The field %s uses a PowerShell short flag `-%s` that has been used in another argument.", field.Name, psShortOrig)
+			} else if slices.Contains(powerShellFlags, powerShellShort) {
+				t.Errorf("The field %s uses a PowerShell short flag `-%s` that has been used in another argument.", field.Name, powerShellShortOrig)
 			} else {
-				psFlags = append(psFlags, psShort)
+				powerShellFlags = append(powerShellFlags, powerShellShort)
 			}
 		}
 	}
