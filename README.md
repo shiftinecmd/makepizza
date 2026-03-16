@@ -51,6 +51,18 @@ The `Contents` of the pizza can be filled by providing the remaining string (as 
 | `[/?]` | `[-h]`<br/>`[--help]` | `[-h]`<br/>`[-Help]` | Display help. Note that help is currently **not** accessible via shells' native `man`, `help`, or `Get-Help` commands. | `mkpizza /?` |
 | `[/v]` | `[-v]`<br/>`[--version]` | `[-v]`<br/>`[-Version]` | Display program version info for each of `mkpizza`, `makepizza`, and `Make-Pizza`. | `mkpizza /v` |
 
+## Limitations
+
+Even though the DOS, POSIX, and PowerShell variants of this programs are made available for many operating systems and shell environments, some advanced command-line features might not be consistent between them.
+
+For example, you want to call PowerShell-based `Make-Pizza -Pineapple $false -Name "Great Pizza"` in Bash. But in Bash, `$false` will instead recall the value of the shell session variable `false`.
+
+Since `false` is clearly unset, Bash will return `$false` as null (or no value), and `Make-Pizza` will instead receive your command as `Make-Pizza -Pineapple -Name "Great Pizza"`, which means the pineapple will still be added to your pizza. Oh, no!
+
+> To solve this issue in POSIX-based shells: use escape characters `\`, so the command becomes `Make-Pizza -Pineapple \$false -Name "Great Pizza"`
+
+`mkpizza`, `makepizza`, and `Make-Pizza` will try to interpret the remaining command-line input as literal strings, so they won't be able to parse advanced shell data structures like lists/arrays, and PowerShell's `HashTable`s. Many shell environments allow you to execute shell subcommands and carry their results to the final `makepizza` command, but the uniqueness or differences between these shells are out of the scope of this software.
+
 ## Frequently-asked questions
 
 ### Why not name this thing `make-a-sandwich` so I can `sudo make-a-sandwich`?
