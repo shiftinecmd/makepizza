@@ -23,15 +23,14 @@ func ParseFromDos(raw []string) (contents string, args common.Arguments) {
 			draft := ""
 			if strings.Contains(val, "=") {
 				// Separate key and value, if necessary
-				splits := strings.Split(val, "=")
+				splits := strings.SplitN(val, "=", 1)
 				sanitized = strings.ToLower(splits[0][1:])
 				draft = splits[1]
-			} else if strings.HasSuffix(strings.ToLower(val), ":on") {
-				sanitized = strings.Replace(strings.ToLower(val[1:]), ":on", "", 0)
-				draft = "true"
-			} else if strings.HasSuffix(strings.ToLower(val), ":off") {
-				sanitized = strings.Replace(strings.ToLower(val[1:]), ":off", "", 0)
-				draft = "false"
+			} else if strings.Contains(val, ":") {
+				// Separate key and value, if necessary
+				splits := strings.SplitN(val, ":", 1)
+				sanitized = strings.ToLower(splits[0][1:])
+				draft = splits[1]
 			}
 
 			if !slices.Contains(vArgs, sanitized) {

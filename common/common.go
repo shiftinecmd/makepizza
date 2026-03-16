@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"slices"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/charmbracelet/log"
@@ -100,6 +101,10 @@ func GetValidArgs(variant CommandVariant) (longArgs []string, shortArgs []string
 			shortCandidates = []string{
 				field.Tag.Get("dos"),
 			}
+			// Allow use `-{flag}` for boolean switches in DOS
+			if field.Type == reflect.TypeFor[bool]() {
+				shortCandidates = append(shortCandidates, "-"+field.Tag.Get("dos"))
+			}
 		case Posix:
 			shortCandidates = []string{
 				field.Tag.Get("posix_short"),
@@ -111,7 +116,7 @@ func GetValidArgs(variant CommandVariant) (longArgs []string, shortArgs []string
 			}
 		}
 
-		for _, insert := range shortCandidates {
+		for i, insert := range shortCandidates {
 			if len(insert) > 0 {
 				shortArgs = append(shortArgs, insert)
 				mapping[insert] = MappingQuery{
@@ -132,7 +137,12 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 		var val interface{}
 		if field, ok := mapping[key]; ok {
 			if field.Field.Type == reflect.TypeFor[bool]() {
-				if len(rawVal) > 0 {
+				// Convert DOS and PowerShell boolean conventions first
+				if strings.ToLower(rawVal) == "on" || strings.ToLower(rawVal) == "$true" {
+					val = true
+				} else if strings.ToLower(rawVal) == "off" || strings.ToLower(rawVal) == "$false" {
+					val = false
+				} else if len(rawVal) > 0 {
 					valTemp, err := strconv.ParseBool(rawVal)
 					if err != nil {
 						log.Fatalf("Parameter `%s` has a non-Boolean value: %s", key, rawVal)

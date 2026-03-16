@@ -10,7 +10,7 @@
 
 It is offerred in three major variants:
 
-+ `mkpizza` for DOS or legacy Windows Batch command-line program conventions
++ `mkpizza` for DOS, CP/M, or legacy Windows Batch command-line program conventions
   - Example: `mkpizza.exe /n="Hello Pizza (^$- )"`
 + `makepizza` for general, UNIX/POSIX command-line program conventions
   - Example: `makepizza --name="Hello Pizza (\$- )"`
@@ -46,7 +46,7 @@ The `Contents` of the pizza can be filled by providing the remaining string (as 
 | `[/n=<string>]` | `[-n <string>]`<br/>`[--name <string>]` | `[-n <string>]`<br/>`[-Name <string>]` | Give your pizza some name! (Optional) | `-n "MozzaTuna(TM)"` |
 | `[/d=<int>]` | `[-d <int>]`<br/>`[--duration <int>]` | `[-d <int>]`<br/>`[-Duration <int>]` | Delays the execution of this program, which should have been done in less than 1 second. Might be useful to simulate multithreading. **Must be a positive integer.** Default is `0` (no delay). | `1200` (1200 seconds) |
 | `[/p:ON \| /p:OFF]` | `[-p \| -P]`<br/>`[--pineapple \| --no-pineapple]` | `[-p <bool>]`<br/>`[-Pineapple <bool>]` | Should we add pineapple to the pizza? Default is `true` (yes). | `/p:OFF` (DOS)<br/>`-P` (POSIX: must use the uppercase P to turn off)<br/>`-p $false` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
-| `[/s:ON \| /s:OFF]` | `[-s \| -S]`<br/>`[--check-superuser \| --no-check-superuser]` | `[-s <bool>]`<br/>`[-CheckSuperuser <bool>]` | Should the pizza be made by a `root`, `sudoer`, or an `Administrator`? Default is `false` (no). | `/s:ON` (DOS)<br/>`-s` (POSIX: must use the lowercase P to turn on)<br/>`-s $true` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
+| `[/s:ON \| /s:OFF]` | `[-s \| -S]`<br/>`[--check-superuser \| --no-check-superuser]` | `[-s <bool>]`<br/>`[-CheckSuperuser <bool>]` | Should the pizza be made by a `root`, `sudoer`, or an `Administrator`? Default is `false` (no). | `/s:ON` (DOS)<br/>`-s` (POSIX: must use the lowercase s to turn on)<br/>`-s $true` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
 | `[/e=<int>]` | `[-e <int>]`<br/>`[--exit-code <int>]` | `[-e <int>]`<br/>`[-ExitCode <int>]` | Emulate the exit code of this program. **Must be a positive integer.** Default is `0` (OK). | `137` (POSIX `SIGKILL`) |
 | `[/?]` | `[-h]`<br/>`[--help]` | `[-h]`<br/>`[-Help]` | Display help. Note that help is currently **not** accessible via shells' native `man`, `help`, or `Get-Help` commands. | `mkpizza /?` |
 | `[/v]` | `[-v]`<br/>`[--version]` | `[-v]`<br/>`[-Version]` | Display program version info for each of `mkpizza`, `makepizza`, and `Make-Pizza`. | `mkpizza /v` |
@@ -73,6 +73,10 @@ Since `false` is clearly unset, Bash will return `$false` as null (or no value),
 
 Adding some ASCII pizza art is indeed a requested feature, but it might confuse people who learn to `makepizza` under OS-level multithreading, that the pizza artworks became another piece of art within the multiverse.
 
+### Why `mkpizza` is assigned for DOS and `makepizza` for POSIX? Why not the other way round?
+
+`mkpizza` is specifically assigned to emulate DOS commands that its full binary filename, like `mkpizza.exe`, still follows the strict [8.3 file naming convention](https://en.wikipedia.org/wiki/8.3_filename) introduced during early DOS versions.
+
 ### Are the arguments/flags case-sensitive?
 
 Flags are only case-sensitive for the POSIX program (`makepizza`).
@@ -81,6 +85,24 @@ Flags are only case-sensitive for the POSIX program (`makepizza`).
 
 Yes, and only in the POSIX-style program (`makepizza`), such as `sudo makepizza -sP` or `sudo makepizza -Ps`.
 
+### Alongside `/s:ON` and `/s:OFF`, is it possible to use `/s` and `/-s` respectively in the DOS variant?
+
+Yes, this is supported. The latter behavior can be seen in some DOS commands like `xcopy`.
+
+### What is the difference between using `:` and `=` in assigning string values to DOS attributes?
+
+`mkpizza` currently treats them as equal, as the choice of the delimiter is often based on the DOS software developer's preference. 
+
+Some DOS commands that use `:` include `xcopy /d:m-d-y` and `chkdsk /L:size`.
+
+Some DOS commands that use `=` include `comp /n=number`
+
 ### Is the program help page accessible through `man` or PowerShell's `Get-Help`?
 
 Not yet. We want to make `makepizza` stable enough to start writing proper documentation for each of the commands.
+
+### As a Windows user, why should I learn DOS command conventions if we already have PowerShell?
+
+DOS command conventions are still in place for "classic" Windows commands like `chkdsk`, `ipconfig`, `slmgr.vbs`, `xcopy`, `robocopy`, and `regedit`. These tools might still be useful to run alongside PowerShell functions and cmdlets, especially when you may need to tinker with Windows Batch files (`.bat`).
+
+Additionally, you can carry the knowledge of DOS commands into other operating systems, like the infamous DOSBox to emulate classic PC games, or FreeDOS and ReactOS which still depend on DOS-style command conventions.

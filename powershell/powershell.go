@@ -59,16 +59,7 @@ func ParseFromPowerShell(raw []string) (contents string, args common.Arguments) 
 		}
 	}
 
-	// STAGE 2: Convert PowerShell boolean values into `strings.ConvertBool()`-compatible syntax
-	for k, v := range parsed {
-		if strings.ToLower(v) == "$true" {
-			parsed[k] = "true"
-		} else if strings.ToLower(v) == "$false" {
-			parsed[v] = "false"
-		}
-	}
-
-	// STAGE 3: Verify that the given value data types are correct.
+	// STAGE 2: Verify that the given value data types are correct.
 	args = common.ParseArguments(parsed, mapping)
 
 	return contents, args
