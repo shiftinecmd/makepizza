@@ -20,13 +20,13 @@ const (
 )
 
 type Arguments struct {
-	Name           *string `dos:"n" posix:"name" posix_short:"n" poweshell:"Name" poweshell_short:"n"`
-	Duration       *uint16 `dos:"d" posix:"duration" posix_short:"d" poweshell:"Duration" poweshell_short:"d"`
-	Pineapple      *bool   `dos:"p" posix:"pineapple" posix_negative:"no-pineapple" posix_short:"p" posix_short_negative:"P" poweshell:"Pineapple" poweshell_short:"p"`
-	CheckSuperuser *bool   `dos:"s" posix:"check-superuser" posix_negative:"no-check-superuser" posix_short:"s" posix_short_negative:"S" poweshell:"CheckSuperuser" poweshell_short:"s"`
-	ExitCode       *uint16 `dos:"e" posix:"exit-code" posix_short:"e" poweshell:"ExitCode" poweshell_short:"e"`
-	Help           *bool   `dos:"?" posix:"help" posix_short:"h" poweshell:"Help" poweshell_short:"h"`
-	Version        *bool   `dos:"v" posix:"version" posix_short:"v" poweshell:"Version" poweshell_short:"v"`
+	Name           *string `dos:"n" posix:"name" posix_short:"n" powershell:"Name" powershell_short:"n"`
+	Duration       *uint16 `dos:"d" posix:"duration" posix_short:"d" powershell:"Duration" powershell_short:"d"`
+	Pineapple      *bool   `dos:"p" posix:"pineapple" posix_negative:"no-pineapple" posix_short:"p" posix_short_negative:"P" powershell:"Pineapple" powershell_short:"p"`
+	CheckSuperuser *bool   `dos:"s" posix:"check-superuser" posix_negative:"no-check-superuser" posix_short:"s" posix_short_negative:"S" powershell:"CheckSuperuser" powershell_short:"s"`
+	ExitCode       *uint16 `dos:"e" posix:"exit-code" posix_short:"e" powershell:"ExitCode" powershell_short:"e"`
+	Help           *bool   `dos:"?" posix:"help" posix_short:"h" powershell:"Help" powershell_short:"h"`
+	Version        *bool   `dos:"v" posix:"version" posix_short:"v" powershell:"Version" powershell_short:"v"`
 }
 
 type MappingQuery struct {
