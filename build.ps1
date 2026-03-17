@@ -1,12 +1,6 @@
 # Dynamically check whether this is Windows or not
 # PowerShell versions less than 6 will be treated as Windows
 
-$env:CC = "clang"   
-$env:CXX = "clang++"
-$env:CGO_ENABLED = "1"
-$env:GOARCH = go env GOHOSTARCH
-$env:GOOS = go env GOHOSTOS
-
 if ($Env:GOOS -eq "windows") {
     Write-Output "Compiling DOS (``mkpizza``) to dist\mkpizza.exe..."
     go build -o dist\mkpizza.exe .\dos
