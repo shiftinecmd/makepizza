@@ -14,12 +14,12 @@ It is offerred in three major variants:
   - Example: `mkpizza.exe /n="Hello Pizza (^$- )"`
 + `makepizza` for general, UNIX/POSIX command-line program conventions
   - Example: `makepizza --name="Hello Pizza (\$- )"`
-+ `Make-Pizza` for PowerShell cmdlet conventions
-  - Example: ``Make-Pizza -Name "Hello Pizza (`$- )"``"
++ `New-Pizza` for PowerShell cmdlet conventions
+  - Example: ``New-Pizza -Name "Hello Pizza (`$- )"``"
 
 `makepizza` is actually written and compiled in Go (instead of usual Bash/Batch/PowerShell scripts), so you can enjoy working with different command-line conventions without having to install their runtimes.
 
-That means you can use `mkpizza` on your Mac without having to install Windows, `makepizza` on Windows without using Bash or WSL, `Make-Pizza` on Linux without PowerShell/.NET for Linux, and so on.
+That means you can use `mkpizza` on your Mac without having to install Windows, `makepizza` on Windows without using Bash or WSL, `New-Pizza` on Linux without PowerShell/.NET for Linux, and so on.
 
 ## Usage
 
@@ -28,16 +28,16 @@ mkpizza {DOS-style arguments} [Contents <string>]
 
 makepizza {POSIX-style arguments} [Contents <string>]
 
-Make-Pizza {PowerShell-style arguments} [Contents <string>]
+New-Pizza {PowerShell-style arguments} [Contents <string>]
 ```
 
-The `Contents` of the pizza can be filled by providing the remaining string (as interpreted _outside_ of the context of the given arguments/flags), or by piping this program by the outputs of the previous program, like `Get-Content foo.txt | Make-Pizza` (PowerShell).
+The `Contents` of the pizza can be filled by providing the remaining string (as interpreted _outside_ of the context of the given arguments/flags), or by piping this program by the outputs of the previous program, like `Get-Content foo.txt | New-Pizza` (PowerShell).
 
 > [!NOTE]
 >
 > **Notice for case-sensitive OS or filesystems**
 > 
-> For convenience, the PowerShell `Make-Pizza` binary is actually stored under the lowercase `make-pizza` filename. This is to follow PowerShell conventions that commands (technically either a "cmdlet" or a "function") and its arguments must be case-insensitive.
+> For convenience, the PowerShell `New-Pizza` binary is actually stored under the lowercase `New-Pizza` filename. This is to follow PowerShell conventions that commands (technically either a "cmdlet" or a "function") and its arguments must be case-insensitive.
 
 ## Command-line arguments
 
@@ -49,19 +49,19 @@ The `Contents` of the pizza can be filled by providing the remaining string (as 
 | `[/s:ON \| /s:OFF]` | `[-s \| -S]`<br/>`[--check-superuser \| --no-check-superuser]` | `[-s <bool>]`<br/>`[-CheckSuperuser <bool>]` | Should the pizza be made by a `root`, `sudoer`, or an `Administrator`? Default is `false` (no). | `/s:ON` (DOS)<br/>`-s` (POSIX: must use the lowercase s to turn on)<br/>`-s $true` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
 | `[/e=<int>]` | `[-e <int>]`<br/>`[--exit-code <int>]` | `[-e <int>]`<br/>`[-ExitCode <int>]` | Emulate the exit code of this program. **Must be a positive integer.** Default is `0` (OK). | `137` (POSIX `SIGKILL`) |
 | `[/?]` | `[-h]`<br/>`[--help]` | `[-h]`<br/>`[-Help]` | Display help. Note that help is currently **not** accessible via shells' native `man`, `help`, or `Get-Help` commands. | `mkpizza /?` |
-| `[/v]` | `[-v]`<br/>`[--version]` | `[-v]`<br/>`[-Version]` | Display program version info for each of `mkpizza`, `makepizza`, and `Make-Pizza`. | `mkpizza /v` |
+| `[/v]` | `[-v]`<br/>`[--version]` | `[-v]`<br/>`[-Version]` | Display program version info for each of `mkpizza`, `makepizza`, and `New-Pizza`. | `mkpizza /v` |
 
 ## Limitations
 
 Even though the DOS, POSIX, and PowerShell variants of this programs are made available for many operating systems and shell environments, some advanced command-line features might not be consistent between them.
 
-For example, you want to call PowerShell-based `Make-Pizza -Pineapple $false -Name "Great Pizza"` in Bash. But in Bash, `$false` will instead recall the value of the shell session variable `false`.
+For example, you want to call PowerShell-based `New-Pizza -Pineapple $false -Name "Great Pizza"` in Bash. But in Bash, `$false` will instead recall the value of the shell session variable `false`.
 
-Since `false` is clearly unset, Bash will return `$false` as null (or no value), and `Make-Pizza` will instead receive your command as `Make-Pizza -Pineapple -Name "Great Pizza"`, which means the pineapple will still be added to your pizza. Oh, no!
+Since `false` is clearly unset, Bash will return `$false` as null (or no value), and `New-Pizza` will instead receive your command as `New-Pizza -Pineapple -Name "Great Pizza"`, which means the pineapple will still be added to your pizza. Oh, no!
 
-> To solve this issue in POSIX-based shells: use escape characters `\`, so the command becomes `Make-Pizza -Pineapple \$false -Name "Great Pizza"`
+> To solve this issue in POSIX-based shells: use escape characters `\`, so the command becomes `New-Pizza -Pineapple \$false -Name "Great Pizza"`
 
-`mkpizza`, `makepizza`, and `Make-Pizza` will try to interpret the remaining command-line input as literal strings, so they won't be able to parse advanced shell data structures like lists/arrays, and PowerShell's `HashTable`s. Many shell environments allow you to execute shell subcommands and carry their results to the final `makepizza` command, but the uniqueness or differences between these shells are out of the scope of this software.
+`mkpizza`, `makepizza`, and `New-Pizza` will try to interpret the remaining command-line input as literal strings, so they won't be able to parse advanced shell data structures like lists/arrays, and PowerShell's `HashTable`s. Many shell environments allow you to execute shell subcommands and carry their results to the final `makepizza` command, but the uniqueness or differences between these shells are out of the scope of this software.
 
 ## Frequently-asked questions
 
@@ -76,6 +76,10 @@ Adding some ASCII pizza art is indeed a requested feature, but it might confuse 
 ### Why `mkpizza` is assigned for DOS and `makepizza` for POSIX? Why not the other way round?
 
 `mkpizza` is specifically assigned to emulate DOS commands that its full binary filename, like `mkpizza.exe`, still follows the strict [8.3 file naming convention](https://en.wikipedia.org/wiki/8.3_filename) introduced during early DOS versions.
+
+### Why the PowerShell command is named `New-Pizza` instead `Make-Pizza`?
+
+PowerShell cmdlets are advised to follow Microsoft's naming conventions, including [*Approved Verbs for PowerShell Commands*](https://learn.microsoft.com/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands).
 
 ### Are the arguments/flags case-sensitive?
 

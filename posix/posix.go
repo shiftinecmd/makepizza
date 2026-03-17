@@ -1,4 +1,4 @@
-package posix
+package main
 
 import (
 	"fmt"

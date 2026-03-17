@@ -1,4 +1,4 @@
-package dos
+package main
 
 import (
 	"fmt"
@@ -31,6 +31,8 @@ func ParseFromDos(raw []string) (contents string, args common.Arguments) {
 				splits := strings.SplitN(val, ":", 1)
 				sanitized = strings.ToLower(splits[0][1:])
 				draft = splits[1]
+			} else {
+				sanitized = val[1:]
 			}
 
 			if !slices.Contains(vArgs, sanitized) {
