@@ -47,7 +47,7 @@ That means you can use `mkpizza` on your Mac without having to install Windows, 
 
 `-s [true|false], -CheckSuperuser [true|false]`
 
-:   Ensure that only root or sudoer can make this pizza (default: false)
+:   Ensure that only `root`, `sudoer`, or Administrators can make this pizza (default: false)
 
 `-e, -ExitCode`
 

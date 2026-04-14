@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>makepizza Command: mkpizzau (POSIX)</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+</head>
+<body>
+<h1>Command: mkpizzau (POSIX)</h1>
+<pre>
+  MAKEPIZZA is a dummy command-line program that educates people how to use the
+  Command-Line Interface (CLI).
+
+  The DOS version is offered in three major variants:
+
+  * MKPIZZA.EXE for DOS, CP/M, or legacy Windows Batch command-line program
+    conventions
+  * MKPIZZAU.EXE for general, UNIX/POSIX command-line program conventions
+  * MKPIZZAP.EXE for PowerShell cmdlet conventions
+</pre>
+<h2>Syntax:</h2>
+<pre>
+  MKPIZZAU [--name <string>] [--duration <int>] [--[no-]pineapple]
+    [--[no-]check-superuser] [--exit-code <int>] [contents]
+</pre>
+<h2>Options:</h2>
+<pre>
+  Basic Options:
+  contents          Add some content to your pizza!
+  -n, --name        Give your pizza some name! (optional).
+  -p, --pineapple   Add pineapple to the pizza.
+  -P, --no-pineapple DO NOT ADD pineapple to the pizza.
+  -?, -h, --help    Display help.
+  -v, --version     Display version.
+  Advanced Options:
+  -d, --duration    Delays the execution of this program, which should have
+                    been done in less than 1 second (default: 0).
+  -e, --exit-code   Change the exit code of this program, after the pizza is
+                    made. (default: 0)
+  -s, --check-superuser Ensure that only root, sudoer, or Administrators can
+                    make this pizza. Since DOS is a single-user operating
+                    system, setting this option will decline your request
+                    (as a non-superuser).
+  -S, --no-check-superuser Anyone can make this pizza.
+</pre>
+<h2>Comments:</h2>
+<pre>
+  Note that the names of the POSIX (MKPIZZAU) and PowerShell (MKPIZZAP)
+  command versions for this DOS edition differ from their original names, which
+  should be "makepizza" and "New-Pizza" respectively. This change is intended
+  so the file names still fit within the DOS 8.3 file naming constraints.
+
+  Since the DOS edition of MAKEPIZZA is written in C instead of Go, there may
+  be little changes on how different-style command parameters are being parsed
+  against the original software.
+</pre>
+<h2>Examples:</h2>
+<pre>
+  This command creates a new pizza named Johny, using the `/N` parameter.
+
+  MKPIZZA /N=Johny "Johny, the Pizza"
+
+  Apparently, this program has the algorithmic affinity to put pineapples on
+  pizza. Oh, yuck! Make another one without it.
+
+  MKPIZZA /N=Johny /P:NO "Johny, the Pizza"
+
+  Nice! You'd think cooking the pizza longer could mean better, crispier piece
+  of bread! Try to cook for 67 seconds while you put the fries in the bag.
+
+  MKPIZZA /N=Johny /P:NO /D:67 "Johny, the Pizza"
+
+  You'd think cooking a pizza for 67 seconds is insecure by default. Skibidi
+  people could have tried to poison your pizza. Therefore, to maintain supply-
+  chain security, only allow `root`, `sudoer`, or Administrator users to make
+  the pizza. And just to be secure, please return an exit code of `165` instead
+  of `0`.
+
+  MKPIZZA /N=Johny /P:NO /D:67 /S:YES /E:165 "Johny, the Pizza"
+</pre>
+<hr>
+<pre>
+  <b>Copyright © 2026, by Reinhart Previano Koentjoro.</b>
+
+  This file is derived from the FreeDOS Spec Command HOWTO, which contains
+  the following copyright notice (H2Cpying):
+
+  Copyright © 1998 Jim Hall
+  Everyone is permitted to copy and distribute verbatim copies
+  of this license document, but changing it is not allowed.
+
+  Unless otherwise stated, FD-DOC HOWTO documents are copyrighted by
+  their respective authors. FD-DOC HOWTO documents may be reproduced and
+  distributed in whole or in part, in any medium physical or electronic,
+  as long as this copyright notice is retained on all copies. Commercial
+  redistribution is allowed and encouraged; however, the author would
+  like to be notified of any such distributions.
+
+  All translations, derivative works, or aggregate works incorporating
+  any FD-DOC HOWTO documents must be covered under this copyright notice.
+  That is, you may not produce a derivative work from a HOWTO and impose
+  additional restrictions on its distribution. Exceptions to these rules
+  may be granted under certain conditions; please contact the FD-DOC
+  HOWTO coordinator at the address given below.
+
+  In short, we wish to promote dissemination of this information through
+  as many channels as possible. However, we do wish to retain copyright
+  on the HOWTO documents, and would like to be notified of any plans to
+  redistribute the HOWTOs.
+
+  If you have any questions, please contact the FD-DOC coordinator
+  at jhall@freedos.org
+</pre></body></html>
