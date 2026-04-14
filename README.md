@@ -48,7 +48,7 @@ The `Contents` of the pizza can be filled by providing the remaining string (as 
 | `[/p:ON \| /p:OFF]` | `[-p \| -P]`<br/>`[--pineapple \| --no-pineapple]` | `[-p <bool>]`<br/>`[-Pineapple <bool>]` | Should we add pineapple to the pizza? Default is `true` (yes). | `/p:OFF` (DOS)<br/>`-P` (POSIX: must use the uppercase P to turn off)<br/>`-p $false` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
 | `[/s:ON \| /s:OFF]` | `[-s \| -S]`<br/>`[--check-superuser \| --no-check-superuser]` | `[-s <bool>]`<br/>`[-CheckSuperuser <bool>]` | Should the pizza be made by a `root`, `sudoer`, or an `Administrator`? Default is `false` (no). | `/s:ON` (DOS)<br/>`-s` (POSIX: must use the lowercase s to turn on)<br/>`-s $true` (PowerShell: [see Limitations for running this command outside of PowerShell](#limitations)) |
 | `[/e=<int>]` | `[-e <int>]`<br/>`[--exit-code <int>]` | `[-e <int>]`<br/>`[-ExitCode <int>]` | Emulate the exit code of this program. **Must be a positive integer.** Default is `0` (OK). | `137` (POSIX `SIGKILL`) |
-| `[/?]` | `[-h]`<br/>`[--help]` | `[-h]`<br/>`[-Help]` | Display help. Note that help is currently **not** accessible via shells' native `man`, `help`, or `Get-Help` commands. | `mkpizza /?` |
+| `[/?]` | `[-h]`<br/>`[--help]` | `[-h]`<br/>`[-Help]` | Display help. Note that help is also accessible via shells' native `man`, `help`, or `Get-Help` commands. | `mkpizza /?` |
 | `[/v]` | `[-v]`<br/>`[--version]` | `[-v]`<br/>`[-Version]` | Display program version info for each of `mkpizza`, `makepizza`, and `New-Pizza`. | `mkpizza /v` |
 
 ## Limitations
@@ -81,7 +81,14 @@ Flags are only case-sensitive for the POSIX program (`makepizza`).
 
 #### Is the program help page accessible through `man` or PowerShell's `Get-Help`?
 
-Not yet. We want to make `makepizza` stable enough to start writing proper documentation for each of the commands.
+Definitely, with **official support** for PowerShell (`Get-Help`), POSIX (`man`), and upcoming DOS edition (FreeDOS `HTMLHELP`)!
+
++ **DOS:** Raw FreeDOS' `HTMLHELP` HTM files are available to copy from `docs\system-help\fdos-html\` directory.
+  - Note that the FreeDOS version of the programs is currently under development.
++ **PowerShell:** Running `Import-Module` on `dist\MakePizza.psm1` will also install the necessary `Get-Help` pages!
++ **POSIX/UNIX:** Manpages are available under `dist/man1`. If you manually compiled `makepizza` (instead of using official packages), you will need to copy individual files from `dist/man1/*` to:
+  - `/usr/local/share/man/man1` (system-wide) or
+  - `~/.local/share/man/man1` (current user).
 
 ### DOS (`mkpizza`)
 
