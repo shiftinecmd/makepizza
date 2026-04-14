@@ -85,10 +85,12 @@ Definitely, with **official support** for PowerShell (`Get-Help`), POSIX (`man`)
 
 + **DOS:** Raw FreeDOS' `HTMLHELP` HTM files are available to copy from `docs\system-help\fdos-html\` directory.
   - Note that the FreeDOS version of the programs is currently under development.
-+ **PowerShell:** Running `Import-Module` on `dist\MakePizza.psm1` will also install the necessary `Get-Help` pages!
 + **POSIX/UNIX:** Manpages are available under `dist/man1`. If you manually compiled `makepizza` (instead of using official packages), you will need to copy individual files from `dist/man1/*` to:
   - `/usr/local/share/man/man1` (system-wide) or
   - `~/.local/share/man/man1` (current user).
++ **PowerShell:** Running `Import-Module` on `dist\MakePizza.psm1` will also install the necessary `Get-Help` pages!
+
+Of course, you can review these pages in the [`docs/system-help` directory](./docs/system-help/).
 
 ### DOS (`mkpizza`)
 
