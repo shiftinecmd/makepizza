@@ -41,7 +41,7 @@ It is offerred in three major variants:
 
 That means you can use `mkpizza` on your Mac without having to install Windows, `makepizza` on Windows without using Bash or WSL, `New-Pizza` on Linux without PowerShell/.NET for Linux, and so on.
 
-## EXAMPLE
+## EXAMPLES
 
 ### Example 1: Create Johny, the Pizza
 
