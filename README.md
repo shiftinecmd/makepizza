@@ -65,35 +65,41 @@ Since `false` is clearly unset, Bash will return `$false` as null (or no value),
 
 ## Frequently-asked questions
 
-### Why not name this thing `make-a-sandwich` so I can `sudo make-a-sandwich`?
+### General
+
+#### Why not name this thing `make-a-sandwich` so I can `sudo make-a-sandwich`?
 
 *What? Make it yourself.*
 
-### Why doesn't this program generate some ASCII pizza art (like in `cowsay`)?
+#### Why doesn't this program generate some ASCII pizza art (like in `cowsay`)?
 
 Adding some ASCII pizza art is indeed a requested feature, but it might confuse people who learn to `makepizza` under OS-level multithreading, that the pizza artworks became another piece of art within the multiverse.
 
-### Why `mkpizza` is assigned for DOS and `makepizza` for POSIX? Why not the other way round?
-
-`mkpizza` is specifically assigned to emulate DOS commands that its full binary filename, like `mkpizza.exe`, still follows the strict [8.3 file naming convention](https://en.wikipedia.org/wiki/8.3_filename) introduced during early DOS versions.
-
-### Why the PowerShell command is named `New-Pizza` instead `Make-Pizza`?
-
-PowerShell cmdlets are advised to follow Microsoft's naming conventions, including [*Approved Verbs for PowerShell Commands*](https://learn.microsoft.com/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands).
-
-### Are the arguments/flags case-sensitive?
+#### Are the arguments/flags case-sensitive?
 
 Flags are only case-sensitive for the POSIX program (`makepizza`).
 
-### Can POSIX learners use group flags to `makepizza`?
+#### Is the program help page accessible through `man` or PowerShell's `Get-Help`?
 
-Yes, and only in the POSIX-style program (`makepizza`), such as `sudo makepizza -sP` or `sudo makepizza -Ps`.
+Not yet. We want to make `makepizza` stable enough to start writing proper documentation for each of the commands.
 
-### Alongside `/s:ON` and `/s:OFF`, is it possible to use `/s` and `/-s` respectively in the DOS variant?
+### DOS (`mkpizza`)
+
+#### Why `mkpizza` is assigned for DOS and `makepizza` for POSIX? Why not the other way round?
+
+`mkpizza` is specifically assigned to emulate DOS commands that its full binary filename, like `mkpizza.exe`, still follows the strict [8.3 file naming convention](https://en.wikipedia.org/wiki/8.3_filename) introduced during early DOS versions.
+
+#### As a Windows user, why should I learn DOS command conventions if we already have PowerShell?
+
+DOS command conventions are still in place for "classic" Windows commands like `chkdsk`, `ipconfig`, `slmgr.vbs`, `xcopy`, `robocopy`, and `regedit`. These tools might still be useful to run alongside PowerShell functions and cmdlets, especially when you may need to tinker with Windows Batch files (`.bat`).
+
+Additionally, you can carry the knowledge of DOS commands into other operating systems, like the infamous DOSBox to emulate classic PC games, or FreeDOS and ReactOS which still depend on DOS-style command conventions.
+
+#### Alongside `/s:ON` and `/s:OFF`, is it possible to use `/s` and `/-s` respectively in the DOS variant?
 
 Yes, this is supported. The latter behavior can be seen in some DOS commands like `xcopy`.
 
-### What is the difference between using `:` and `=` in assigning string values to DOS attributes?
+#### What is the difference between using `:` and `=` in assigning string values to DOS attributes?
 
 `mkpizza` currently treats them as equal, as the choice of the delimiter is often based on the DOS software developer's preference. 
 
@@ -101,12 +107,14 @@ Some DOS commands that use `:` include `xcopy /d:m-d-y` and `chkdsk /L:size`.
 
 Some DOS commands that use `=` include `comp /n=number`
 
-### Is the program help page accessible through `man` or PowerShell's `Get-Help`?
+### POSIX (`makepizza`)
 
-Not yet. We want to make `makepizza` stable enough to start writing proper documentation for each of the commands.
+#### Can POSIX learners use group flags to `makepizza`?
 
-### As a Windows user, why should I learn DOS command conventions if we already have PowerShell?
+Yes, and only in the POSIX-style program (`makepizza`), such as `sudo makepizza -sP` or `sudo makepizza -Ps`.
 
-DOS command conventions are still in place for "classic" Windows commands like `chkdsk`, `ipconfig`, `slmgr.vbs`, `xcopy`, `robocopy`, and `regedit`. These tools might still be useful to run alongside PowerShell functions and cmdlets, especially when you may need to tinker with Windows Batch files (`.bat`).
+### PowerShell (`New-Pizza`)
 
-Additionally, you can carry the knowledge of DOS commands into other operating systems, like the infamous DOSBox to emulate classic PC games, or FreeDOS and ReactOS which still depend on DOS-style command conventions.
+#### Why the PowerShell command is named `New-Pizza` instead `Make-Pizza`?
+
+PowerShell cmdlets are advised to follow Microsoft's naming conventions, including [*Approved Verbs for PowerShell Commands*](https://learn.microsoft.com/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands).

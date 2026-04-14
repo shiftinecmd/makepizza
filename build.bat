@@ -1,8 +1,8 @@
 @echo off
 
 echo Compiling DOS (`mkpizza`) to dist\mkpizza.exe...
-go build -o dist\mkpizza.exe .\dos
+go build -o dist\bin\mkpizza.exe .\dos
 echo Compiling POSIX (`makepizza`) to dist\makepizza.exe...
-go build -o dist\makepizza.exe .\posix
+go build -o dist\bin\makepizza.exe .\posix
 echo Compiling PowerShell (`New-Pizza`) to dist\new-pizza.exe...
-go build -o dist\new-pizza.exe .\powershell
+go build -o dist\bin\new-pizza.exe .\powershell

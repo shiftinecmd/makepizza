@@ -131,10 +131,10 @@ func GetValidArgs(variant CommandVariant) (longArgs []string, shortArgs []string
 }
 
 func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) Arguments {
-	args := Arguments{}
-	argsRf := reflect.ValueOf(args)
+	args := &Arguments{}
+	argsRf := reflect.ValueOf(args).Elem()
 	for key, rawVal := range parsed {
-		var val interface{}
+		var val any
 		if field, ok := mapping[key]; ok {
 			if field.Field.Type == reflect.TypeFor[bool]() {
 				// Convert DOS and PowerShell boolean conventions first
@@ -232,19 +232,31 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 			log.Fatalf("INTERNAL ERROR: Mapping data for field %s is not found", key)
 		}
 
-		fv := argsRf.FieldByName(key)
+		fv := argsRf.FieldByName(mapping[key].Field.Name)
 		if !fv.IsValid() {
 			log.Fatalf("INTERNAL ERROR: Argument struct field %s is not valid", key)
 		} else if !fv.CanSet() {
 			log.Fatalf("INTERNAL ERROR: Argument struct field %s cannot be set", key)
 		}
 		valOf := reflect.ValueOf(val)
-		if fv.Kind() != valOf.Kind() {
-			log.Fatalf("INTERNAL ERROR: Argument struct field %s has type mismatch", key)
+
+		// If the target attribute is optional / has pointer
+		if fv.Kind() == reflect.TypeFor[*Arguments]().Kind() {
+			// If value is non-null
+			if valOf != reflect.ValueOf(nil) {
+				fv.Set(valOf)
+			} else {
+				fv.Set(reflect.ValueOf(nil))
+			}
+		} else {
+			if fv.Kind() != valOf.Kind() {
+				log.Fatalf("INTERNAL ERROR: Argument struct field %s has type mismatch: %v %v", fv.Kind(), valOf.Kind())
+			} else {
+				fv.Set(valOf)
+			}
 		}
-		fv.Set(valOf)
 	}
-	return args
+	return *args
 }
 
 func MakePizza(contents string, args Arguments) uint16 {

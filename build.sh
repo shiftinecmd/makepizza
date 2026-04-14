@@ -11,10 +11,10 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
         ;;
     *)
         echo "Compiling DOS (\`mkpizza\`) to dist/mkpizza..."
-        go build -o dist/mkpizza ./dos
+        go build -o dist/bin/mkpizza ./dos
         echo "Compiling POSIX (\`makepizza\`) to dist/makepizza..."
-        go build -o dist/makepizza ./posix
+        go build -o dist/bin/makepizza ./posix
         echo "Compiling PowerShell (\`New-Pizza\`) to dist/new-pizza..."
-        go build -o dist/new-pizza ./powershell
+        go build -o dist/bin/new-pizza ./powershell
         ;;
 esac
