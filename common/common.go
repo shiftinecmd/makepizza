@@ -20,6 +20,9 @@ const (
 	PowerShell
 )
 
+var TrueVals = []string{"true", "$true", "on", "1", "yes"}
+var FalseVals = []string{"false", "$false", "off", "0", "no"}
+
 type Arguments struct {
 	Name           *string `dos:"n" posix:"name" posix_short:"n" powershell:"Name" powershell_short:"n"`
 	Duration       *uint16 `dos:"d" posix:"duration" posix_short:"d" powershell:"Duration" powershell_short:"d"`
@@ -79,7 +82,7 @@ func GetValidArgs(variant CommandVariant) (longArgs []string, shortArgs []string
 			}
 		case PowerShell:
 			longCandidates = []string{
-				field.Tag.Get("powershell"),
+				strings.ToLower(field.Tag.Get("powershell")),
 			}
 		}
 
@@ -137,20 +140,39 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 		var val any
 		if field, ok := mapping[key]; ok {
 			if field.Field.Type == reflect.TypeFor[bool]() {
-				// Convert DOS and PowerShell boolean conventions first
-				if strings.ToLower(rawVal) == "on" || strings.ToLower(rawVal) == "$true" {
-					val = true
-				} else if strings.ToLower(rawVal) == "off" || strings.ToLower(rawVal) == "$false" {
-					val = false
-				} else if len(rawVal) > 0 {
+				rawLower := strings.ToLower(rawVal)
+				if rawVal == "" || slices.Contains(TrueVals, rawLower) {
+					val = field.Negative
+				} else if slices.Contains(TrueVals, rawLower) {
+					val = !field.Negative
+				} else {
 					valTemp, err := strconv.ParseBool(rawVal)
 					if err != nil {
 						log.Fatalf("Parameter `%s` has a non-Boolean value: %s", key, rawVal)
 					}
 					val = valTemp
+				}
+			} else if field.Field.Type == reflect.TypeFor[*bool]() {
+				// Convert DOS and PowerShell boolean conventions first
+				rawLower := strings.ToLower(rawVal)
+				if rawVal == "" || slices.Contains(TrueVals, rawLower) {
+					ptrVal := true
+					if field.Negative {
+						ptrVal = false
+					}
+					val = &ptrVal
+				} else if slices.Contains(TrueVals, rawLower) {
+					ptrVal := false
+					if field.Negative {
+						ptrVal = true
+					}
+					val = &ptrVal
 				} else {
-					// Use hints from the created mapping
-					val = !field.Negative
+					valTemp, err := strconv.ParseBool(rawVal)
+					if err != nil {
+						log.Fatalf("Parameter `%s` has a non-Boolean value: %s", key, rawVal)
+					}
+					val = valTemp
 				}
 			} else if slices.Contains([]reflect.Type{
 				reflect.TypeFor[int](),
@@ -158,6 +180,11 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 				reflect.TypeFor[int16](),
 				reflect.TypeFor[int32](),
 				reflect.TypeFor[int64](),
+				reflect.TypeFor[*int](),
+				reflect.TypeFor[*int8](),
+				reflect.TypeFor[*int16](),
+				reflect.TypeFor[*int32](),
+				reflect.TypeFor[*int64](),
 			}, field.Field.Type) {
 				valTemp, err := strconv.ParseInt(rawVal, 10, 0)
 				if err != nil {
@@ -173,6 +200,18 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 					val = int32(valTemp)
 				case reflect.TypeFor[int64]():
 					val = int64(valTemp)
+				case reflect.TypeFor[*int8]():
+					ptrVal := int8(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*int16]():
+					ptrVal := int16(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*int32]():
+					ptrVal := int32(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*int64]():
+					ptrVal := int64(valTemp)
+					val = &ptrVal
 				default:
 					val = valTemp
 				}
@@ -182,6 +221,11 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 				reflect.TypeFor[uint16](),
 				reflect.TypeFor[uint32](),
 				reflect.TypeFor[uint64](),
+				reflect.TypeFor[*uint](),
+				reflect.TypeFor[*uint8](),
+				reflect.TypeFor[*uint16](),
+				reflect.TypeFor[*uint32](),
+				reflect.TypeFor[*uint64](),
 			}, field.Field.Type) {
 				valTemp, err := strconv.ParseUint(rawVal, 10, 0)
 				if err != nil {
@@ -197,6 +241,18 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 					val = uint32(valTemp)
 				case reflect.TypeFor[uint64]():
 					val = uint64(valTemp)
+				case reflect.TypeFor[*uint8]():
+					ptrVal := uint8(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*uint16]():
+					ptrVal := uint16(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*uint32]():
+					ptrVal := uint32(valTemp)
+					val = &ptrVal
+				case reflect.TypeFor[*uint64]():
+					ptrVal := uint64(valTemp)
+					val = &ptrVal
 				default:
 					val = valTemp
 				}
@@ -250,7 +306,7 @@ func ParseArguments(parsed map[string]string, mapping map[string]MappingQuery) A
 			}
 		} else {
 			if fv.Kind() != valOf.Kind() {
-				log.Fatalf("INTERNAL ERROR: Argument struct field %s has type mismatch: %v %v", fv.Kind(), valOf.Kind())
+				log.Fatalf("INTERNAL ERROR: Argument struct field %s has type mismatch: %v", fv.Kind(), valOf.Kind())
 			} else {
 				fv.Set(valOf)
 			}

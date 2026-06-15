@@ -25,20 +25,18 @@ func ParseFromPowerShell(raw []string) (contents string, args common.Arguments) 
 	for _, val := range raw {
 		if strings.HasPrefix(val, "-") {
 			// PowerShell short or long form
-			sanitized := val[1:]
+			flag := val[1:]
 
-			for _, flag := range strings.Split(sanitized, "") {
-				flagLower := strings.ToLower(flag)
+			flagLower := strings.ToLower(flag)
 
-				if !slices.Contains(vShortArgs, flagLower) && !slices.Contains(vLongArgsLower, flagLower) {
-					log.Fatalf("Invalid PowerShell parameter: -%s", flag)
-				}
-				currentKey = &flagLower
-				if _, ok := parsed[flagLower]; ok {
-					log.Fatalf("PowerShell parameter -%s declared multiple times", flag)
-				} else {
-					parsed[flagLower] = ""
-				}
+			if !slices.Contains(vShortArgs, flagLower) && !slices.Contains(vLongArgsLower, flagLower) {
+				log.Fatalf("Invalid PowerShell parameter: -%s", flag)
+			}
+			currentKey = &flagLower
+			if _, ok := parsed[flagLower]; ok {
+				log.Fatalf("PowerShell parameter -%s declared multiple times", flag)
+			} else {
+				parsed[flagLower] = ""
 			}
 		} else if currentKey == nil {
 			if len(contents) == 0 {
