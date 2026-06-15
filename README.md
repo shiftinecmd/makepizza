@@ -15,7 +15,7 @@ It is offerred in three major variants:
 + `makepizza` for general, UNIX/POSIX command-line program conventions
   - Example: `makepizza --name="Hello Pizza (\$- )"`
 + `New-Pizza` for PowerShell cmdlet conventions
-  - Example: ``New-Pizza -Name "Hello Pizza (`$- )"``"
+  - Example: ``New-Pizza -Name "Hello Pizza (`$- )"``
 
 `makepizza` is actually written and compiled in Go (instead of usual Bash/Batch/PowerShell scripts), so you can enjoy working with different command-line conventions without having to install their runtimes.
 
